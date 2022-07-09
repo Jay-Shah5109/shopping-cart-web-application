@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+</head>
+
+<body>
+<div th:fragment="products">
+    <input type="search" id="name" name="name" class="form-control" placeholder="Search product" aria-label="Search" />
+    <a th:href="@{'/home/searchProduct/{name}'(id=${name})}" class="col-lg"
+       sec:authorize="isAuthenticated()"> <br></br>
+        <button type="button" class="btn btn-primary" th:text="Search">Search</button>
+    </a>
+    <h2><b>HELLO CUSTOMER, BELOW ARE ITEMS FROM STORE NEAR YOU!</b></h2>
+    <div class="panel-default well" th:each="product : ${products}">
+        <div class="panel-heading">
+            <h3 th:text="${product.name}"></h3>
+            </div>
+            <h4 th:text="${product.discountedSellingPrice}" class="panel-body">DISCOUNTED PRICE: </h4>
+        <div class="row panel-footer">
+            <div th:inline="text" class="col-md-2"><h5>MRP: [[${product.mrp}]]</h5></div>
+            <div th:inline="text" class="col-md-2"><h5>Available Qty: [[${product.quantity}]]</h5></div>
+            <div th:inline="text" class="col-md-2"><h5>Weight: [[${product.weightInGms}]] grams</h5></div>
+            <a th:href="@{'/shoppingCart/addProduct/{id}'(id=${product.id})}" class="col-lg"
+               sec:authorize="isAuthenticated()" th:if="${product.quantity}>0">
+                <button type="button" class="btn btn-primary" th:text="Buy">ADD TO CART</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
